@@ -4,7 +4,7 @@
 
 #include "utility.h"
 
-namespace mystl{
+namespace mystl {
 	// 不修改序列的操作
 
 	// all_of
@@ -68,7 +68,8 @@ namespace mystl{
 	template< class InputIt, class T >
 	typename std::iterator_traits<InputIt>::difference_type
 		count(InputIt first, InputIt last, const T& value) {
-		auto count = 0;
+		using RT = typename std::iterator_traits<InputIt>::difference_type;
+		RT count = 0;
 		while (first != last) {
 			if (*first++ == value) {
 				++count;
@@ -78,11 +79,12 @@ namespace mystl{
 	}
 
 	// count_if
-	//返回范围[first, last) 中满足特定判别标准 p 的元素数
+	// 返回范围[first, last) 中满足特定判别标准 p 的元素数
 	template< class InputIt, class UnaryPred >
 	typename std::iterator_traits<InputIt>::difference_type
 		count_if(InputIt first, InputIt last, UnaryPred p) {
-		auto count = 0;
+		using RT = typename std::iterator_traits<InputIt>::difference_type;
+		RT count = 0;
 		while (first != last) {
 			if (p(*first++)) {
 				++count;
@@ -99,7 +101,7 @@ namespace mystl{
 			InputIt2 first2) {
 		while (first1 != last1) {
 			if (!(*first1 == *first2)) {
-				return { first1, first2 };
+				break;
 			}
 			++first1;
 			++first2;
@@ -113,7 +115,7 @@ namespace mystl{
 			InputIt2 first2, BinaryPred p) {
 		while (first1 != last1) {
 			if (!p(*first1, *first2)) {
-				return { first1, first2 };
+				break;
 			}
 			++first1;
 			++first2;
@@ -127,7 +129,7 @@ namespace mystl{
 			InputIt2 first2, InputIt2 last2) {
 		while (first1 != last1 && first2 != last2) {
 			if (!(*first1 == *first2)) {
-				return { first1, first2 };
+				break;
 			}
 			++first1;
 			++first2;
@@ -141,7 +143,7 @@ namespace mystl{
 			InputIt2 first2, InputIt2 last2, BinaryPred p) {
 		while (first1 != last1 && first2 != last2) {
 			if (!p(*first1, *first2)) {
-				return { first1, first2 };
+				break;
 			}
 			++first1;
 			++first2;
@@ -160,7 +162,7 @@ namespace mystl{
 			}
 			++first;
 		}
-		return first;
+		return last;
 	}
 
 	// find_if
@@ -458,7 +460,7 @@ namespace mystl{
 	}
 
 	// move_backward
-	//	移动来自范围 [first, last) 的元素到在 d_last 结束的另一范围。以逆序移动元素（首先复制末元素），但保持它们的相对顺序
+	// 移动来自范围 [first, last) 的元素到在 d_last 结束的另一范围。以逆序移动元素（首先复制末元素），但保持它们的相对顺序
 	template< class BidirIt1, class BidirIt2 >
 	BidirIt2 move_backward(BidirIt1 first, BidirIt1 last, BidirIt2 d_last) {
 		while (last != first) {
@@ -528,7 +530,7 @@ namespace mystl{
 		return first;
 	}
 
-	// remve
+	// remove
 	// 从范围 [first, last) 移除所有等于 value 的元素，并返回范围新结尾的尾后迭代器
 	template< class ForwardIt, class T >
 	ForwardIt remove(ForwardIt first, ForwardIt last, const T& value) {
@@ -947,7 +949,7 @@ namespace mystl{
 	template< class RandomIt >
 	bool is_heap(RandomIt first, RandomIt last) {
 		auto n = last - first;
-		for (auto child = 1; child < n; ++child) {
+		for (decltype(n) child = 1; child < n; ++child) {
 			auto parent = (child - 1) / 2;
 			if (*(first + parent) < *(first + child)) {
 				return false;
@@ -959,7 +961,7 @@ namespace mystl{
 	template< class RandomIt, class Compare >
 	bool is_heap(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
-		for (auto child = 1; child < n; ++child) {
+		for (decltype(n) child = 1; child < n; ++child) {
 			auto parent = (child - 1) / 2;
 			if (comp(*(first + parent), *(first + child))) {
 				return false;
@@ -973,7 +975,7 @@ namespace mystl{
 	template< class RandomIt >
 	RandomIt is_heap_until(RandomIt first, RandomIt last) {
 		auto n = last - first;
-		for (auto child = 1; child < n; ++child) {
+		for (decltype(n) child = 1; child < n; ++child) {
 			auto parent = (child - 1) / 2;
 			if (*(first + parent) < *(first + child)) {
 				return first + child;
@@ -985,7 +987,7 @@ namespace mystl{
 	template< class RandomIt, class Compare >
 	RandomIt is_heap_until(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
-		for (auto child = 1; child < n; ++child) {
+		for (decltype(n) child = 1; child < n; ++child) {
 			auto parent = (child - 1) / 2;
 			if (comp(*(first + parent), *(first + child))) {
 				return first + child;
@@ -994,19 +996,18 @@ namespace mystl{
 		return last;
 	}
 
-	// up_haep
+	// up_heap
 	// 堆上浮
 	template< class RandomIt >
 	void up_heap(RandomIt first, RandomIt index) {
 		auto child = index - first;
 		auto parent = (child - 1) / 2;
-		while (parent > 0) {
+		while (child > 0) {
 			if (*(first + parent) < *(first + child)) {
 				mystl::iter_swap(first + child, first + parent);
 				child = parent;
 				parent = (child - 1) / 2;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
@@ -1016,13 +1017,12 @@ namespace mystl{
 	void up_heap(RandomIt first, RandomIt index, Compare comp) {
 		auto child = index - first;
 		auto parent = (child - 1) / 2;
-		while (parent > 0) {
+		while (child > 0) {
 			if (comp(*(first + parent), *(first + child))) {
 				mystl::iter_swap(first + child, first + parent);
 				child = parent;
 				parent = (child - 1) / 2;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
@@ -1043,8 +1043,7 @@ namespace mystl{
 				mystl::iter_swap(first + child, first + parent);
 				parent = child;
 				child = parent * 2 + 1;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
@@ -1063,8 +1062,7 @@ namespace mystl{
 				mystl::iter_swap(first + child, first + parent);
 				parent = child;
 				child = parent * 2 + 1;
-			}
-			else {
+			} else {
 				break;
 			}
 		}
@@ -1075,7 +1073,7 @@ namespace mystl{
 	template< class RandomIt >
 	void make_heap(RandomIt first, RandomIt last) {
 		auto n = last - first;
-		for (auto i = n - 1; i >= 0; --i) {
+		for (auto i = (n - 1 - 1) / 2; i >= 0; --i) {
 			mystl::down_heap(first, first + i, last);
 		}
 	}
@@ -1083,7 +1081,7 @@ namespace mystl{
 	template< class RandomIt, class Compare >
 	void make_heap(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
-		for (auto i = n - 1; i >= 0; --i) {
+		for (auto i = (n - 1 - 1) / 2; i >= 0; --i) {
 			mystl::down_heap(first, first + i, last, comp);
 		}
 	}
@@ -1277,18 +1275,18 @@ namespace mystl{
 	// merge_sort
 	// 归并排序
 	template< class RandomIt, class T >
-	void merge_sort(RandomIt zero, RandomIt first, RandomIt last, std::vector<T>& v) {
+	void merge_sort(RandomIt first, RandomIt last, std::vector<T>& v) {
 		if (last - first <= 1) {
 			return;
 		}
 		auto n = last - first;
 		auto mid = n / 2;
-		mystl::merge_sort(zero, first, first + mid, v);
-		mystl::merge_sort(zero, first + mid, last, v);
+		mystl::merge_sort(first, first + mid, v);
+		mystl::merge_sort(first + mid, last, v);
 
 		auto i = first - first;
 		auto j = mid;
-		auto k = first - zero;
+		auto k = i;
 		while (i < mid && j < n) {
 			if (!(*(first + j) < *(first + i))) {
 				v[k++] = *(first + i);
@@ -1308,23 +1306,23 @@ namespace mystl{
 			++j;
 		}
 		for (i = 0; i < n; ++i) {
-			*(first + i) = v[first - zero + i];
+			*(first + i) = v[i];
 		}
 	}
 
 	template< class RandomIt, class T, class Compare >
-	void merge_sort(RandomIt zero, RandomIt first, RandomIt last, std::vector<T>& v, Compare comp) {
+	void merge_sort(RandomIt first, RandomIt last, std::vector<T>& v, Compare comp) {
 		if (last - first <= 1) {
 			return;
 		}
 		auto n = last - first;
 		auto mid = n / 2;
-		mystl::merge_sort(zero, first, first + mid, v, comp);
-		mystl::merge_sort(zero, first + mid, last, v, comp);
+		mystl::merge_sort(first, first + mid, v, comp);
+		mystl::merge_sort(first + mid, last, v, comp);
 
 		auto i = first - first;
 		auto j = mid;
-		auto k = first - zero;
+		auto k = i;
 		while (i < mid && j < n) {
 			if (!comp(*(first + j), *(first + i))) {
 				v[k++] = *(first + i);
@@ -1344,7 +1342,7 @@ namespace mystl{
 			++j;
 		}
 		for (i = 0; i < n; ++i) {
-			*(first + i) = v[first - zero + i];
+			*(first + i) = v[i];
 		}
 	}
 
@@ -1353,19 +1351,19 @@ namespace mystl{
 	// 保证保持等价元素间的顺序
 	template< class RandomIt >
 	void stable_sort(RandomIt first, RandomIt last) {
-		using Ty = std::remove_reference_t<decltype(*first)>;
+		using Ty = mystl::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> v(last - first);
-		mystl::merge_sort(first, first, last, v);
+		mystl::merge_sort(first, last, v);
 	}
 
 	template< class RandomIt, class Compare >
 	void stable_sort(RandomIt first, RandomIt last, Compare comp) {
-		using Ty = std::remove_reference_t<decltype(*first)>;
+		using Ty = mystl::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> v(last - first);
-		mystl::merge_sort(first, first, last, v, comp);
+		mystl::merge_sort(first, last, v, comp);
 	}
 
-	// midian
+	// median
 	// 三数取中
 	template< class T >
 	T median(const T& left, const T& mid, const T& right) {
@@ -1427,7 +1425,7 @@ namespace mystl{
 		for (auto i = first - first; i < n; ++i) {
 			auto value = *(first + i);
 			auto j = i - 1;
-			for (; j >= first - first && value < *(first + j); --j) {
+			for (; j >= 0 && value < *(first + j); --j) {
 				*(first + 1 + j) = *(first + j);
 			}
 			*(first + 1 + j) = value;
@@ -1440,7 +1438,7 @@ namespace mystl{
 		for (auto i = first - first; i < n; ++i) {
 			auto value = *(first + i);
 			auto j = i - 1;
-			for (; j >= first - first && comp(value, *(first + j)); --j) {
+			for (; j >= 0 && comp(value, *(first + j)); --j) {
 				*(first + 1 + j) = *(first + j);
 			}
 			*(first + 1 + j) = value;
@@ -1538,7 +1536,8 @@ namespace mystl{
 			return;
 		}
 		if (depth > 64) {
-			mystl::partial_sort(first, last, last);
+			mystl::make_heap(first, last);
+			mystl::sort_heap(first, last);
 			return;
 		}
 		
@@ -1553,12 +1552,17 @@ namespace mystl{
 
 	template< class RandomIt, class Compare >
 	void quick_sort(RandomIt first, RandomIt last, int depth, Compare comp) {
-		if (last - first < 32) {
+		if (last - first <= 1) {
+			return;
+		}
+		if (last - first < 8) {
 			mystl::insertion_sort(first, last, comp);
 			return;
 		}
-		if (depth > 12) {
-			mystl::partial_sort(first, last, last, comp);
+		if (depth > 64) {
+			mystl::make_heap(first, last, comp);
+			mystl::sort_heap(first, last, comp);
+			return;
 		}
 
 		auto l = first - first;
@@ -1581,7 +1585,6 @@ namespace mystl{
 	template< class RandomIt, class Compare >
 	void sort(RandomIt first, RandomIt last, Compare comp) {
 		mystl::quick_sort(first, last, 0, comp);
-
 	}
 
 	// （有序范围上的）二分搜索操作
@@ -1591,51 +1594,82 @@ namespace mystl{
 	template< class ForwardIt, class T >
 	ForwardIt lower_bound(ForwardIt first, ForwardIt last,
 		const T& value) {
-		while (first != last) {
-			if (!(*first < value)) {
-				return first;
+		ForwardIt it;
+		typename std::iterator_traits<ForwardIt>::difference_type count, step;
+		count = std::distance(first, last);
+		while (count > 0) {
+			it = first;
+			step = count / 2;
+			std::advance(it, step);
+			if (*it < value) {
+				first = ++it;
+				count -= step + 1;
+			} else {
+				count = step;
 			}
-			++first;
 		}
-		return last;
+		return first;
 	}
 
 	template< class ForwardIt, class T, class Compare >
 	ForwardIt lower_bound(ForwardIt first, ForwardIt last,
-		const T& value, Compare comp) {
-		while (first != last) {
-			if (!comp(*first, value)) {
-				return first;
+		const T & value, Compare comp) {
+		ForwardIt it;
+		typename std::iterator_traits<ForwardIt>::difference_type count, step;
+		count = std::distance(first, last);
+		while (count > 0) {
+			it = first;
+			step = count / 2;
+			std::advance(it, step);
+			if (comp(*it, value)) {
+				first = ++it;
+				count -= step + 1;
+			} else {
+				count = step;
 			}
-			++first;
 		}
-		return last;
+		return first;
 	}
-
 	// upper_bound
 	// 在已划分的范围 [first, last) 中查找第一个后序于 value 的元素
 	template< class ForwardIt, class T >
 	ForwardIt upper_bound(ForwardIt first, ForwardIt last,
-		const T& value) {
-		while (first != last) {
-			if (value < *first) {
-				return first;
+		const T & value) {
+		ForwardIt it;
+		typename std::iterator_traits<ForwardIt>::difference_type count, step;
+		count = std::distance(first, last);
+		while (count > 0) {
+			it = first;
+			step = count / 2;
+			std::advance(it, step);
+			if (value < *it) {
+				first = ++it;
+				count -= step + 1;
+			} else {
+				count = step;
 			}
-			++first;
-		}
-		return last;
+		}	
+		return first;
 	}
 
 	template< class ForwardIt, class T, class Compare >
 	ForwardIt upper_bound(ForwardIt first, ForwardIt last,
 		const T& value, Compare comp) {
-		while (first != last) {
-			if (comp(value, *first)) {
-				return first;
+		ForwardIt it;
+		typename std::iterator_traits<ForwardIt>::difference_type count, step;
+		count = std::distance(first, last);
+		while (count > 0) {
+			it = first;
+			step = count / 2;
+			std::advance(it, step);
+			if (comp(value, *it)) {
+				first = ++it;
+				count -= step + 1;
+			} else {
+				count = step;
 			}
-			++first;
 		}
-		return last;
+		return first;
 	}
 
 	// binary_search
@@ -1648,7 +1682,7 @@ namespace mystl{
 	}
 	template<class ForwardIt, class T, class Compare>
 	bool binary_search(ForwardIt first, ForwardIt last, const T& value, Compare comp) {
-		first = std::lower_bound(first, last, value, comp);
+		first = mystl::lower_bound(first, last, value, comp);
 		return (!(first == last) and !(comp(value, *first)));
 	}
 
@@ -1675,7 +1709,7 @@ namespace mystl{
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first) {
 		while (first1 != last1 && first2 != last2) {
-			if (*first1 < *first2) {
+			if (*first1 <= *first2) {
 				*d_first++ = *first1++;
 			} else {
 				*d_first++ = *first2++;
@@ -1716,23 +1750,23 @@ namespace mystl{
 	// 将两个相继的有序范围 [first, middle) 和 [middle, last) 归并为一个有序范围 [first, last)
 	template< class BidirIt >
 	void inplace_merge(BidirIt first, BidirIt middle, BidirIt last) {
-		using Ty = std::remove_reference_t<decltype(*first)>;
+		using Ty = mystl::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> tmp(std::distance(first, last));
 		auto it_1 = first;
 		auto it_2 = middle;
 		int index = 0;
 		while (it_1 != middle && it_2 != last) {
-			if (*it_1 < *it_2) {
+			if (*it_1 <= *it_2) {
 				tmp[index++] = *it_1++;
 			} else {
-				tmp[index++] = *it_2;
+				tmp[index++] = *it_2++;
 			}
 		}
 		while (it_1 != middle) {
-			tmp[index++] = *it_1;
+			tmp[index++] = *it_1++;
 		}
 		while (it_2 != last) {
-			tmp[index++] = *it_2;
+			tmp[index++] = *it_2++;
 		}
 		index = 0;
 		while (first != last) {
@@ -1742,7 +1776,7 @@ namespace mystl{
 
 	template< class BidirIt, class Compare >
 	void inplace_merge(BidirIt first, BidirIt middle, BidirIt last, Compare comp) {
-		using Ty = std::remove_reference_t<decltype(*first)>;
+		using Ty = mystl::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> tmp(std::distance(first, last));
 		auto it_1 = first;
 		auto it_2 = middle;
@@ -1752,14 +1786,14 @@ namespace mystl{
 				tmp[index++] = *it_1++;
 			}
 			else {
-				tmp[index++] = *it_2;
+				tmp[index++] = *it_2++;
 			}
 		}
 		while (it_1 != middle) {
-			tmp[index++] = *it_1;
+			tmp[index++] = *it_1++;
 		}
 		while (it_2 != last) {
-			tmp[index++] = *it_2;
+			tmp[index++] = *it_2++;
 		}
 		index = 0;
 		while (first != last) {
@@ -2028,7 +2062,7 @@ namespace mystl{
 	constexpr T max(std::initializer_list<T> ilist) {
 		T maximum = *ilist.begin();
 		for (auto& n : ilist) {
-			maximum = n < maximum ? maximum : n;
+			maximum = max(maximum, n);
 		}
 		return maximum;
 	}
@@ -2037,7 +2071,7 @@ namespace mystl{
 	constexpr T max(std::initializer_list<T> ilist, Compare comp) {
 		T maximum = *ilist.begin();
 		for (auto& n : ilist) {
-			maximum = comp(n, maximum) ? maximum : n;
+			maximum = max(maximum, n, comp);
 		}
 	}
 
@@ -2078,7 +2112,7 @@ namespace mystl{
 	constexpr T min(std::initializer_list<T> ilist) {
 		T minimum = *ilist.begin();
 		for (auto& n : ilist) {
-			minimum = minimum < n ? minimum : n;
+			minimum = min(minimum, n);
 		}
 		return minimum;
 	}
@@ -2087,7 +2121,7 @@ namespace mystl{
 	constexpr T min(std::initializer_list<T> ilist, Compare comp) {
 		T minimum = *ilist.begin();
 		for (auto& n : ilist) {
-			minimum = comp(minimum, n) ? minimum : n;
+			minimum = min(minimum, n, comp);
 		}
 		return minimum;
 	}
@@ -2310,4 +2344,4 @@ namespace mystl{
 		}
 		return false;
 	}
-}
+} //namespace mystl
