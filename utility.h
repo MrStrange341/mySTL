@@ -271,10 +271,8 @@ namespace mystl {
 	// declval
 	// 用于在不求值语境中编写表达式的辅助模板，通常为 decltype 的操作数
 	// 在不求值语境中，这个辅助模板把任意类型 T（可为不完整类型）转换为该类型的一个表达式，使得可以不经过构造函数即可使用 T 的成员函数
-	//template <class T>
-	//std::add_rvalue_reference_t<T> declval() noexcept {
-	//	static_assert(false, "declval 不允许出现于求值语境");
-	//}
-
-
+	template <class T>
+	std::add_rvalue_reference_t<T> declval() noexcept {
+		static_assert(false, "declval 不允许出现于求值语境");
+	}
 }

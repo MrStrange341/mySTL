@@ -3,7 +3,7 @@
 #include <exception>
 #include <type_traits>
 #include "algorithm.h"
-//#include "mtmalloc.h"
+#include "mtmalloc.h"
 
 namespace mystl {
 	template <class Ptr>
@@ -51,12 +51,12 @@ namespace mystl {
 		}
 
 		T* allocate(std::size_t n) {
-			return static_cast<T*>(::operator new(n * sizeof(T)));
-			//return static_cast<T*>(mtmalloc::malloc(n * sizeof(T)));
+			//return static_cast<T*>(::operator new(n * sizeof(T)));
+			return static_cast<T*>(mtmalloc::malloc(n * sizeof(T)));
 		}
 		void deallocate(T* p, std::size_t n) {
-			::operator delete(p);
-			//mtmalloc::free(p);
+			//::operator delete(p);
+			mtmalloc::free(p);
 		}
 
 		template <class U, class... Args>
@@ -72,12 +72,11 @@ namespace mystl {
 	template <class Alloc>
 	using allocator_traits = std::allocator_traits<Alloc>;
 
-	//template <class T, class Alloc>
-	//struct uses_allocator : std::_Has_allocator_type<T, Alloc>::type {
-	//};
+	template <class T, class Alloc>
+	struct uses_allocator : std::uses_allocator<T, Alloc> {};
 
-	//template <class T, class Alloc>
-	//constexpr bool uses_allocator_v = uses_allocator<T, Alloc>::value;
+	template <class T, class Alloc>
+	constexpr bool uses_allocator_v = uses_allocator<T, Alloc>::value;
 
 	// unique_ptr
 	template <class T>
@@ -98,12 +97,6 @@ namespace mystl {
 			ptr_ = other.ptr_;
 			other.ptr_ = nullptr;
 		}
-
-		//template <class U, class E>
-		//unique_ptr(unique_ptr<U, E>&& u) noexcept {
-		//	ptr = u.ptr;
-		//	u.ptr = nullptr;
-		//}
 		
 		unique_ptr(const unique_ptr&) = delete;
 
@@ -123,11 +116,6 @@ namespace mystl {
 			r.ptr_ = nullptr;
 			return *this;
 		}
-
-		//template <class U, class E>
-		//unique_ptr& operator=(unique_ptr<U, E>&& r) noexcept {
-		//	*this = r;
-		//}
 
 		unique_ptr& operator=(std::nullptr_t) noexcept {
 			~unique_ptr();
@@ -712,7 +700,9 @@ namespace mystl {
 
 		~weak_ptr() {
 			if (pcb_ != nullptr) {
-				--pcb_->weak_count;
+				if (--pcb_->weak_count == 0) {
+					delete pcb_;
+				}
 				pcb_ = nullptr;
 			}
 		}
