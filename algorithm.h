@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include <initializer_list>
-
+#include <iterator>
+#include <vector>
 #include "utility.h"
 
 namespace mystl {
@@ -9,7 +10,7 @@ namespace mystl {
 
 	// all_of
 	// 检查一元谓词 p 是否对范围 [first, last) 中所有元素返回 true
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	bool all_of(InputIt first, InputIt last, UnaryPred p) {
 		while (first != last) {
 			if (!p(*first++)) {
@@ -21,7 +22,7 @@ namespace mystl {
 
 	// any_of
 	// 检查一元谓词 p 是否对范围 [first, last) 中至少一个元素返回 true
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	bool any_of(InputIt first, InputIt last, UnaryPred p) {
 		while (first != last) {
 			if (p(*first++)) {
@@ -33,7 +34,7 @@ namespace mystl {
 
 	// none_of
 	// 检查一元谓词 p 是否不对范围 [first, last) 中任何元素返回 true
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	bool none_of(InputIt first, InputIt last, UnaryPred p) {
 		while (first != last) {
 			if (p(*first++)) {
@@ -45,7 +46,7 @@ namespace mystl {
 
 	// for_each
 	// 对范围 [first, last) 中每个迭代器的解引用结果应用给定的函数对象 f，忽略 f 返回的结果
-	template< class InputIt, class UnaryFunc >
+	template <class InputIt, class UnaryFunc>
 	UnaryFunc for_each(InputIt first, InputIt last, UnaryFunc f) {
 		while (first != last) {
 			f(*first++);
@@ -55,7 +56,7 @@ namespace mystl {
 
 	// for_each_n
 	// 对范围 [first, first + n) 中每个迭代器的解引用结果应用给定的函数对象 f，忽略 f 返回的结果
-	template< class InputIt, class Size, class UnaryFunc >
+	template <class InputIt, class Size, class UnaryFunc>
 	InputIt for_each_n(InputIt first, Size n, UnaryFunc f) {
 		while (n-- > 0) {
 			f(*first++);
@@ -65,7 +66,7 @@ namespace mystl {
 
 	// count
 	// 返回范围 [first, last) 中等于 value 的元素数
-	template< class InputIt, class T >
+	template <class InputIt, class T>
 	typename std::iterator_traits<InputIt>::difference_type
 		count(InputIt first, InputIt last, const T& value) {
 		using RT = typename std::iterator_traits<InputIt>::difference_type;
@@ -80,7 +81,7 @@ namespace mystl {
 
 	// count_if
 	// 返回范围[first, last) 中满足特定判别标准 p 的元素数
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	typename std::iterator_traits<InputIt>::difference_type
 		count_if(InputIt first, InputIt last, UnaryPred p) {
 		using RT = typename std::iterator_traits<InputIt>::difference_type;
@@ -95,7 +96,7 @@ namespace mystl {
 
 	// mismatch
 	// 返回一对到两个范围中的首个不匹配元素的迭代器
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	std::pair<InputIt1, InputIt2>
 		mismatch(InputIt1 first1, InputIt1 last1,
 			InputIt2 first2) {
@@ -109,7 +110,7 @@ namespace mystl {
 		return { first1, first2 };
 	}
 
-	template< class InputIt1, class InputIt2, class BinaryPred >
+	template <class InputIt1, class InputIt2, class BinaryPred>
 	std::pair<InputIt1, InputIt2>
 		mismatch(InputIt1 first1, InputIt1 last1,
 			InputIt2 first2, BinaryPred p) {
@@ -123,7 +124,7 @@ namespace mystl {
 		return { first1, first2 };
 	}
 
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	std::pair<InputIt1, InputIt2>
 		mismatch(InputIt1 first1, InputIt1 last1,
 			InputIt2 first2, InputIt2 last2) {
@@ -137,7 +138,7 @@ namespace mystl {
 		return { first1, first2 };
 	}
 
-	template< class InputIt1, class InputIt2, class BinaryPred >
+	template <class InputIt1, class InputIt2, class BinaryPred>
 	std::pair<InputIt1, InputIt2>
 		mismatch(InputIt1 first1, InputIt1 last1,
 			InputIt2 first2, InputIt2 last2, BinaryPred p) {
@@ -154,7 +155,7 @@ namespace mystl {
 
 	// find
 	// 返回指向范围 [first, last) 中等于 value 的首个元素的迭代器（没有这种元素时返回 last）
-	template< class InputIt, class T >
+	template <class InputIt, class T>
 	InputIt find(InputIt first, InputIt last, const T& value) {
 		while (first != last) {
 			if (*first == value) {
@@ -167,7 +168,7 @@ namespace mystl {
 
 	// find_if
 	// 返回指向范围 [first, last) 中满足特定判别标准 p 的首个元素的迭代器（没有这种元素时返回 last）
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	InputIt find_if(InputIt first, InputIt last, UnaryPred p) {
 		while (first != last) {
 			if (p(*first)) {
@@ -180,7 +181,7 @@ namespace mystl {
 
 	// find_if_not
 	// 返回指向范围 [first, last) 中不满足特定判别标准 q 的首个元素的迭代器（没有这种元素时返回 last）
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	InputIt find_if_not(InputIt first, InputIt last, UnaryPred q) {
 		while (first != last) {
 			if (!q(*first)) {
@@ -191,13 +192,13 @@ namespace mystl {
 		return last;
 	}
 
-	template< class ForwardIt1, class ForwardIt2 >
+	template <class ForwardIt1, class ForwardIt2>
 	ForwardIt1 search(ForwardIt1 first, ForwardIt1 last,
 		ForwardIt2 s_first, ForwardIt2 s_last);
 
 	// find_end
 	// 在范围 [first, last) 中搜索序列 [s_first, s_last) 最后一次出现的位置
-	template< class ForwardIt1, class ForwardIt2 >
+	template <class ForwardIt1, class ForwardIt2>
 	ForwardIt1 find_end(ForwardIt1 first, ForwardIt1 last,
 		ForwardIt2 s_first, ForwardIt2 s_last) {
 		if (s_first == s_last) {
@@ -217,7 +218,7 @@ namespace mystl {
 		return result;
 	}
 
-	template< class ForwardIt1, class ForwardIt2, class BinaryPred >
+	template <class ForwardIt1, class ForwardIt2, class BinaryPred>
 	ForwardIt1 find_end(ForwardIt1 first, ForwardIt1 last,
 		ForwardIt2 s_first, ForwardIt2 s_last,
 		BinaryPred p) {
@@ -240,7 +241,7 @@ namespace mystl {
 
 	// search
 	// 搜索范围 [first, last) 中首次出现元素序列 [s_first, s_last) 的位置
-	template< class ForwardIt1, class ForwardIt2 >
+	template <class ForwardIt1, class ForwardIt2>
 	ForwardIt1 search(ForwardIt1 first, ForwardIt1 last,
 		ForwardIt2 s_first, ForwardIt2 s_last) {
 		while (true) {
@@ -260,7 +261,7 @@ namespace mystl {
 		}
 	}
 
-	template< class ForwardIt1, class ForwardIt2, class BinaryPred >
+	template <class ForwardIt1, class ForwardIt2, class BinaryPred>
 	ForwardIt1 search(ForwardIt1 first, ForwardIt1 last,
 		ForwardIt2 s_first, ForwardIt2 s_last,
 		BinaryPred p) {
@@ -283,7 +284,7 @@ namespace mystl {
 
 	// find_first_of
 	// 在范围 [first, last) 中搜索范围 [s_first, s_last) 中的任何元素
-	template< class InputIt, class ForwardIt >
+	template <class InputIt, class ForwardIt>
 	InputIt find_first_of(InputIt first, InputIt last,
 		ForwardIt s_first, ForwardIt s_last) {
 		while (first != last) {
@@ -299,7 +300,7 @@ namespace mystl {
 		return last;
 	}
 
-	template< class InputIt, class ForwardIt, class BinaryPred >
+	template <class InputIt, class ForwardIt, class BinaryPred>
 	InputIt find_first_of(InputIt first, InputIt last,
 		ForwardIt s_first, ForwardIt s_last,
 		BinaryPred p) {
@@ -318,7 +319,7 @@ namespace mystl {
 
 	// adjacent_find
 	// 在范围 [first, last) 中搜索两个连续的相等元素
-	template< class ForwardIt >
+	template <class ForwardIt>
 	ForwardIt adjacent_find(ForwardIt first, ForwardIt last) {
 		if (first == last) {
 			return last;
@@ -331,7 +332,7 @@ namespace mystl {
 		return last;
 	}
 
-	template< class ForwardIt, class BinaryPred >
+	template <class ForwardIt, class BinaryPred>
 	ForwardIt adjacent_find(ForwardIt first, ForwardIt last, BinaryPred p) {
 		if (first == last) {
 			return last;
@@ -346,7 +347,7 @@ namespace mystl {
 
 	// search_n
 	// 在范围 [first, last) 中搜索 count 个等同元素的序列，每个都等于给定的值 value
-	template< class ForwardIt, class Size, class T >
+	template <class ForwardIt, class Size, class T>
 	ForwardIt search_n(ForwardIt first, ForwardIt last,
 		Size count, const T& value) {
 		if (count <= 0) {
@@ -358,7 +359,7 @@ namespace mystl {
 			}
 			auto it = first;
 			for (int count_cur = 1; true; ++count_cur) {
-				if (count_cur >= count) {
+				if (count_cur>= count) {
 					return it;
 				}
 				++first;
@@ -373,7 +374,7 @@ namespace mystl {
 		return last;
 	}
 
-	template< class ForwardIt, class Size, class T, class BinaryPred >
+	template <class ForwardIt, class Size, class T, class BinaryPred>
 	ForwardIt search_n(ForwardIt first, ForwardIt last,
 		Size count, const T& value, BinaryPred p) {
 		if (count <= 0) {
@@ -385,7 +386,7 @@ namespace mystl {
 			}
 			auto it = first;
 			for (int count_cur = 1; true; ++count_cur) {
-				if (count_cur >= count) {
+				if (count_cur>= count) {
 					return it;
 				}
 				++first;
@@ -404,7 +405,7 @@ namespace mystl {
 
 	// copy
 	// 复制范围 [first, last) 中的元素到从 d_first 开始的另一范围（复制目标范围）
-	template< class InputIt, class OutputIt >
+	template <class InputIt, class OutputIt>
 	OutputIt copy(InputIt first, InputIt last,
 		OutputIt d_first) {
 		for (; first != last; (void)++first, (void)++d_first) {
@@ -415,7 +416,7 @@ namespace mystl {
 
 	// copy_if
 	// 复制范围 [first, last) 中满足 pred 的元素到从 d_first 开始的另一范围（复制目标范围）
-	template< class InputIt, class OutputIt, class UnaryPred >
+	template <class InputIt, class OutputIt, class UnaryPred>
 	OutputIt copy_if(InputIt first, InputIt last,
 		OutputIt d_first, UnaryPred pred) {
 		for (; first != last; (void)++first, (void)++d_first) {
@@ -427,7 +428,7 @@ namespace mystl {
 
 	// copy_n
 	// 复制从 first 开始的范围中恰好 count 个值到从 result 开始的范围
-	template< class InputIt, class Size, class OutputIt >
+	template <class InputIt, class Size, class OutputIt>
 	OutputIt copy_n(InputIt first, Size count, OutputIt result) {
 		while (count > 0) {
 			*result++ = *first++;
@@ -438,7 +439,7 @@ namespace mystl {
 
 	// copy_backward
 	// 将范围[first, last) 内的元素复制到终于 d_last 的范围
-	template< class BidirIt1, class BidirIt2 >
+	template <class BidirIt1, class BidirIt2>
 	BidirIt2 copy_backward(BidirIt1 first, BidirIt1 last, BidirIt2 d_last) {
 		while (last != first) {
 			*--d_last = *--last;
@@ -448,7 +449,7 @@ namespace mystl {
 
 	// move
 	// 移动范围 [first, last) 中的元素到从 d_first 开始的另一范围，从 first 开始逐次到 last
-	template< class InputIt, class OutputIt >
+	template <class InputIt, class OutputIt>
 	OutputIt move(InputIt first, InputIt last,
 		OutputIt d_first) {
 		while (first != last) {
@@ -461,7 +462,7 @@ namespace mystl {
 
 	// move_backward
 	// 移动来自范围 [first, last) 的元素到在 d_last 结束的另一范围。以逆序移动元素（首先复制末元素），但保持它们的相对顺序
-	template< class BidirIt1, class BidirIt2 >
+	template <class BidirIt1, class BidirIt2>
 	BidirIt2 move_backward(BidirIt1 first, BidirIt1 last, BidirIt2 d_last) {
 		while (last != first) {
 			*--d_last = mystl::move(*--last);
@@ -471,7 +472,7 @@ namespace mystl {
 
 	// fill
 	// 将给定的 value 赋给 [first, last) 中的所有元素
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	void fill(ForwardIt first, ForwardIt last, const T& value) {
 		while (first != last) {
 			*first++ = value;
@@ -480,7 +481,7 @@ namespace mystl {
 
 	// fill_n
 	// 如果 count > 0，则将给定的 value 赋给从 first 开始的范围的前 count 个元素
-	template< class OutputIt, class Size, class T >
+	template <class OutputIt, class Size, class T>
 	OutputIt fill_n(OutputIt first, Size count, const T& value) {
 		while (count > 0) {
 			*first++ = value;
@@ -491,7 +492,7 @@ namespace mystl {
 
 	// transform
 	// 应用给定的函数到某个/些输入范围中的元素，并将结果存储到从 d_first 开始的输出范围
-	template< class InputIt, class OutputIt, class UnaryOp >
+	template <class InputIt, class OutputIt, class UnaryOp>
 	OutputIt transform(InputIt first1, InputIt last1,
 		OutputIt d_first, UnaryOp unary_op) {
 		while (first1 != last1) {
@@ -500,8 +501,8 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2,
-		class OutputIt, class BinaryOp >
+	template <class InputIt1, class InputIt2,
+		class OutputIt, class BinaryOp>
 	OutputIt transform(InputIt1 first1, InputIt1 last1, InputIt2 first2,
 		OutputIt d_first, BinaryOp binary_op) {
 		while (first1 != last1) {
@@ -512,7 +513,7 @@ namespace mystl {
 
 	// generate
 	// 以给定函数对象 g 所生成的值对范围 [first, last) 中的每个元素赋值
-	template< class ForwardIt, class Generator >
+	template <class ForwardIt, class Generator>
 	void generate(ForwardIt first, ForwardIt last, Generator g) {
 		while (first != last) {
 			*first++ = g();
@@ -521,7 +522,7 @@ namespace mystl {
 
 	// generate_n
 	// 如果 count > 0，则将给定函数对象 g 所生成的值对始于 first 的范围的前 count 个元素赋值
-	template< class OutputIt, class Size, class Generator >
+	template <class OutputIt, class Size, class Generator>
 	OutputIt generate_n(OutputIt first, Size count, Generator g) {
 		while (count > 0) {
 			*first++ = g();
@@ -532,7 +533,7 @@ namespace mystl {
 
 	// remove
 	// 从范围 [first, last) 移除所有等于 value 的元素，并返回范围新结尾的尾后迭代器
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	ForwardIt remove(ForwardIt first, ForwardIt last, const T& value) {
 		first = mystl::find(first, last, value);
 		if (first != last) {
@@ -547,7 +548,7 @@ namespace mystl {
 
 	// remove_if
 	// 从范围 [first, last) 移除所有满足特定判别标准 p 的元素，并返回范围新结尾的尾后迭代器
-	template< class ForwardIt, class UnaryPred >
+	template <class ForwardIt, class UnaryPred>
 	ForwardIt remove_if(ForwardIt first, ForwardIt last, UnaryPred p) {
 		first = mystl::find_if(first, last, p);
 		if (first != last) {
@@ -562,7 +563,7 @@ namespace mystl {
 
 	// remove_copy
 	// 复制来自范围 [first, last) 的元素到从 d_first 开始的另一范围，省略等于 value 的元素
-	template< class InputIt, class OutputIt, class T >
+	template <class InputIt, class OutputIt, class T>
 	OutputIt remove_copy(InputIt first, InputIt last,
 		OutputIt d_first, const T& value) {
 		while (first != last) {
@@ -576,7 +577,7 @@ namespace mystl {
 
 	// remove_copy_if
 	// 复制来自范围 [first, last) 的元素到从 d_first 开始的另一范围，省略满足特定判别标准 p 的元素
-	template< class InputIt, class OutputIt, class UnaryPred >
+	template <class InputIt, class OutputIt, class UnaryPred>
 	OutputIt remove_copy_if(InputIt first, InputIt last,
 		OutputIt d_first, UnaryPred p) {
 		while (first != last) {
@@ -590,7 +591,7 @@ namespace mystl {
 
 	// replace
 	// 以 new_value 替换范围 [first, last) 中所有等于 old_value 的元素
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	void replace(ForwardIt first, ForwardIt last,
 		const T& old_value, const T& new_value) {
 		while (first != last) {
@@ -603,7 +604,7 @@ namespace mystl {
 
 	// replace_if
 	// 以 new_value 替换范围 [first, last) 中所有满足特定判别标准 p 的元素
-	template< class ForwardIt, class UnaryPred, class T >
+	template <class ForwardIt, class UnaryPred, class T>
 	void replace_if(ForwardIt first, ForwardIt last,
 		UnaryPred p, const T& new_value) {
 		while (first != last) {
@@ -616,7 +617,7 @@ namespace mystl {
 
 	// replace_copy
 	// 复制来自范围 [first, last) 的元素到始于 d_first 的范围，复制过程中以 new_value 替换所有等于 old_value 的元素
-	template< class InputIt, class OutputIt, class T >
+	template <class InputIt, class OutputIt, class T>
 	OutputIt replace_copy(InputIt first, InputIt last, OutputIt d_first,
 		const T& old_value, const T& new_value) {
 		while (first != last) {
@@ -632,7 +633,7 @@ namespace mystl {
 
 	// replace_copy_if
 	// 复制来自范围 [first, last) 的元素到始于 d_first 的范围，复制过程中以 new_value 替换所有等于 old_value 的元素
-	template< class InputIt, class OutputIt, class UnaryPred, class T >
+	template <class InputIt, class OutputIt, class UnaryPred, class T>
 	OutputIt replace_copy_if
 	(InputIt first, InputIt last, OutputIt d_first,
 		UnaryPred p, const T& new_value) {
@@ -649,31 +650,11 @@ namespace mystl {
 	}
 
 	// swap
-	// 交换 a 与 b
-	template< class T >
-	void swap(T& a, T& b) noexcept(
-		std::is_nothrow_move_constructible<T>::value&&
-		std::is_nothrow_move_assignable<T>::value
-		) {
-		auto tmp = mystl::move(a);
-		a = mystl::move(b);
-		b = tmp;
-	}
-
-	// swap
-	// 交换数组 a 与 b
-	template< class T2, size_t N >
-	void swap(T2(&a)[N], T2(&b)[N]) noexcept(std::is_nothrow_swappable_v<T2>) {
-		size_t count = 0;
-		while (count < N) {
-			mystl::swap(*(a + count), *(b + count));
-			count++;
-		}
-	}
+	// 见 utility.h
 
 	// swap_ranges
 	// 在范围 [first1, last1) 和从 first2 开始的包含 std::distance(first1, last1) 个元素的另一范围间交换元素
-	template< class ForwardIt1, class ForwardIt2 >
+	template <class ForwardIt1, class ForwardIt2>
 	ForwardIt2 swap_ranges(ForwardIt1 first1, ForwardIt1 last1,
 		ForwardIt2 first2) {
 		while (first1 != last1) {
@@ -684,14 +665,14 @@ namespace mystl {
 
 	// iter_swap
 	// 交换给定的迭代器所指向的元素的值
-	template< class ForwardIt1, class ForwardIt2 >
+	template <class ForwardIt1, class ForwardIt2>
 	void iter_swap(ForwardIt1 a, ForwardIt2 b) {
 		mystl::swap(*a, *b);
 	}
 
 	// reverse
 	// 反转 [first, last) 范围中的元素顺序
-	template< class BidirIt >
+	template <class BidirIt>
 	void reverse(BidirIt first, BidirIt last) {
 		auto n = std::distance(first, last) / 2;
 		last--;
@@ -713,7 +694,7 @@ namespace mystl {
 
 	// rotate
 	// 进行元素范围上的左旋转
-	template< class ForwardIt >
+	template <class ForwardIt>
 	ForwardIt rotate(ForwardIt first, ForwardIt middle, ForwardIt last) {
 		if (first == middle) {
 			return last;
@@ -742,7 +723,7 @@ namespace mystl {
 
 	// rotate_copy
 	// 从范围 [first, last) 复制元素到始于 d_first 的另一范围，使得 *n_first 成为新范围的首元素，而 *(n_first - 1) 成为末元素
-	template< class ForwardIt, class OutputIt >
+	template <class ForwardIt, class OutputIt>
 	OutputIt rotate_copy(ForwardIt first, ForwardIt n_first,
 		ForwardIt last, OutputIt d_first) {
 		auto mid = n_first;
@@ -757,7 +738,7 @@ namespace mystl {
 
 	// unique
 	// 从范围 [first, last) 移除相继等价元素组中首元素以外的所有元素，并返回范围新结尾的尾后迭代器
-	template< class ForwardIt >
+	template <class ForwardIt>
 	ForwardIt unique(ForwardIt first, ForwardIt last) {
 		if (first == last) {
 			return last;
@@ -779,7 +760,7 @@ namespace mystl {
 		return ++first;
 	}
 
-	template< class ForwardIt, class BinaryPred >
+	template <class ForwardIt, class BinaryPred>
 	ForwardIt unique(ForwardIt first, ForwardIt last, BinaryPred p) {
 		if (first == last) {
 			return last;
@@ -803,7 +784,7 @@ namespace mystl {
 
 	// unique_copy
 	// 从范围 [first, last) 复制元素到从 d_first 开始的另一范围，使得目标范围不存在连续的相等元素
-	template< class InputIt, class OutputIt >
+	template <class InputIt, class OutputIt>
 	OutputIt unique_copy(InputIt first, InputIt last, OutputIt d_first) {
 		if (first == last) {
 			return d_first;
@@ -818,7 +799,7 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt, class OutputIt, class BinaryPred >
+	template <class InputIt, class OutputIt, class BinaryPred>
 	OutputIt unique_copy(InputIt first, InputIt last,
 		OutputIt d_first, BinaryPred p) {
 		if (first == last) {
@@ -838,7 +819,7 @@ namespace mystl {
 
 	// is_partitioned
 	// 检查范围 [first, last) 是否已按谓词 p 划分：所有满足 p 的元素都会在所有不满足的元素之前出现
-	template< class InputIt, class UnaryPred >
+	template <class InputIt, class UnaryPred>
 	bool is_partitioned(InputIt first, InputIt last, UnaryPred p) {
 		if (first == last) {
 			return true;
@@ -871,7 +852,7 @@ namespace mystl {
 	// partition
 	// 重排序范围 [first, last) 中的元素，使得谓词 p 对其返回 true 的所有元素位于谓词 p 对其返回 false 的所有元素之前
 	// 不保持元素的相对顺序
-	template< class ForwardIt, class UnaryPred >
+	template <class ForwardIt, class UnaryPred>
 	ForwardIt partition(ForwardIt first, ForwardIt last, UnaryPred p) {
 		while (true) {
 			while (first != last && p(*first)) {
@@ -890,8 +871,8 @@ namespace mystl {
 
 	// partition_copy
 	// 根据谓词 p 的返回值，将范围 [first, last) 中的元素复制到两个不同范围
-	template< class InputIt, class OutputIt1,
-		class OutputIt2, class UnaryPred >
+	template <class InputIt, class OutputIt1,
+		class OutputIt2, class UnaryPred>
 	std::pair<OutputIt1, OutputIt2>
 		partition_copy(InputIt first, InputIt last,
 			OutputIt1 d_first_true, OutputIt2 d_first_false,
@@ -909,7 +890,7 @@ namespace mystl {
 	// stable_partition
 	// 重排序范围 [first, last) 中的元素，使得所有谓词 p 对其返回 true 的元素均先于谓词 p 对其返回 false 的元素
 	// 保持元素的相对顺序
-	template< class BidirIt, class UnaryPred >
+	template <class BidirIt, class UnaryPred>
 	BidirIt stable_partition(BidirIt first, BidirIt last, UnaryPred p) {
 		first = mystl::find_if_not(first, last, p);
 		auto it = first;
@@ -931,7 +912,7 @@ namespace mystl {
 
 	// partition_point
 	// 检验已划分范围 [first, last)，并定位第一分段的结尾，即首个不满足 p 的元素，或者在所有元素满足 p 时是 last
-	template< class ForwardIt, class UnaryPred >
+	template <class ForwardIt, class UnaryPred>
 	ForwardIt partition_point(ForwardIt first, ForwardIt last, UnaryPred p) {
 		while (first != last) {
 			if (!p(*first)) {
@@ -946,7 +927,7 @@ namespace mystl {
 
 	// is_heap
 	// 检查范围 [first, last) 是否为堆
-	template< class RandomIt >
+	template <class RandomIt>
 	bool is_heap(RandomIt first, RandomIt last) {
 		auto n = last - first;
 		for (decltype(n) child = 1; child < n; ++child) {
@@ -958,7 +939,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	bool is_heap(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
 		for (decltype(n) child = 1; child < n; ++child) {
@@ -972,7 +953,7 @@ namespace mystl {
 
 	// is_heap_until
 	// 检查范围 [first, last) 并寻找从 first 开始的满足堆要求的最大范围
-	template< class RandomIt >
+	template <class RandomIt>
 	RandomIt is_heap_until(RandomIt first, RandomIt last) {
 		auto n = last - first;
 		for (decltype(n) child = 1; child < n; ++child) {
@@ -984,7 +965,7 @@ namespace mystl {
 		return last;
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	RandomIt is_heap_until(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
 		for (decltype(n) child = 1; child < n; ++child) {
@@ -998,7 +979,7 @@ namespace mystl {
 
 	// up_heap
 	// 堆上浮
-	template< class RandomIt >
+	template <class RandomIt>
 	void up_heap(RandomIt first, RandomIt index) {
 		auto child = index - first;
 		auto parent = (child - 1) / 2;
@@ -1013,7 +994,7 @@ namespace mystl {
 		}
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void up_heap(RandomIt first, RandomIt index, Compare comp) {
 		auto child = index - first;
 		auto parent = (child - 1) / 2;
@@ -1030,7 +1011,7 @@ namespace mystl {
 
 	// down_heap
 	// 堆下沉
-	template< class RandomIt >
+	template <class RandomIt>
 	void down_heap(RandomIt first, RandomIt index, RandomIt last) {
 		auto n = last - first;
 		auto parent = index - first;
@@ -1049,7 +1030,7 @@ namespace mystl {
 		}
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void down_heap(RandomIt first, RandomIt index, RandomIt last, Compare comp) {
 		auto n = last - first;
 		auto parent = index - first;
@@ -1070,43 +1051,43 @@ namespace mystl {
 
 	// make_heap
 	// 在范围 [first, last) 中构造堆
-	template< class RandomIt >
+	template <class RandomIt>
 	void make_heap(RandomIt first, RandomIt last) {
 		auto n = last - first;
-		for (auto i = (n - 1 - 1) / 2; i >= 0; --i) {
+		for (auto i = (n - 1 - 1) / 2; i>= 0; --i) {
 			mystl::down_heap(first, first + i, last);
 		}
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void make_heap(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
-		for (auto i = (n - 1 - 1) / 2; i >= 0; --i) {
+		for (auto i = (n - 1 - 1) / 2; i>= 0; --i) {
 			mystl::down_heap(first, first + i, last, comp);
 		}
 	}
 
 	// push_heap
 	// 将位于位置 last - 1 的元素插入到堆 [first, last - 1) 中
-	template< class RandomIt >
+	template <class RandomIt>
 	void push_heap(RandomIt first, RandomIt last) {
 		mystl::up_heap(first, last - 1);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void push_heap(RandomIt first, RandomIt last, Compare comp) {
 		mystl::up_heap(first, last - 1, comp);
 	}
 
 	// pop_heap
 	// 交换在位置 first 的值和在位置 last - 1 的值，并使得子范围 [first, last - 1) 变为堆
-	template< class RandomIt >
+	template <class RandomIt>
 	void pop_heap(RandomIt first, RandomIt last) {
 		mystl::iter_swap(first, last - 1);
 		mystl::down_heap(first, first, last - 1);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void pop_heap(RandomIt first, RandomIt last, Compare comp) {
 		mystl::iter_swap(first, last - 1);
 		mystl::down_heap(first, first, last - 1, comp);
@@ -1114,7 +1095,7 @@ namespace mystl {
 
 	// sort_heap
 	// 将堆 [first, last) 转换为有序范围，不再维持堆的性质
-	template< class RandomIt >
+	template <class RandomIt>
 	void sort_heap(RandomIt first, RandomIt last) {
 		auto n = last - first;
 		while (n > 0) {
@@ -1124,7 +1105,7 @@ namespace mystl {
 		}
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void sort_heap(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
 		while (n > 0) {
@@ -1138,7 +1119,7 @@ namespace mystl {
 
 	// is_sorted
 	// 检查范围 [first, last) 中的元素是否以非降序排序
-	template< class ForwardIt >
+	template <class ForwardIt>
 	bool is_sorted(ForwardIt first, ForwardIt last) {
 		if (first == last) {
 			return true;
@@ -1151,7 +1132,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class ForwardIt, class Compare >
+	template <class ForwardIt, class Compare>
 	bool is_sorted(ForwardIt first, ForwardIt last, Compare comp) {
 		if (first == last) {
 			return true;
@@ -1166,7 +1147,7 @@ namespace mystl {
 
 	// is_sorted_until
 	// 检验范围 [first, last)，并寻找从 first 开始且其中元素已按非降序排序的最大范围
-	template< class ForwardIt >
+	template <class ForwardIt>
 	ForwardIt is_sorted_until(ForwardIt first, ForwardIt last) {
 		if (first == last) {
 			return last;
@@ -1179,7 +1160,7 @@ namespace mystl {
 		return last;
 	}
 
-	template< class ForwardIt, class Compare >
+	template <class ForwardIt, class Compare>
 	ForwardIt is_sorted_until(ForwardIt first, ForwardIt last,
 		Compare comp) {
 		if (first == last) {
@@ -1196,7 +1177,7 @@ namespace mystl {
 	// partitial_sort
 	// 重排元素，使得范围 [first, middle) 含有范围 [first, last) 中已排序的 middle - first 个最小元素
 	// 不保证保持相等元素间的顺序、未指定范围 [middle, last) 中剩余元素的顺序
-	template< class RandomIt >
+	template <class RandomIt>
 	void partial_sort(RandomIt first, RandomIt middle, RandomIt last) {
 		mystl::make_heap(first, middle);
 		auto n = last - first;
@@ -1209,7 +1190,7 @@ namespace mystl {
 		mystl::sort_heap(first, middle);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void partial_sort(RandomIt first, RandomIt middle, RandomIt last, Compare comp) {
 		mystl::make_heap(first, middle, comp);
 		auto n = last - first;
@@ -1224,7 +1205,7 @@ namespace mystl {
 
 	// partitial_sort_copy
 	// 以升序排序范围 [first, last) 中的某些元素，存储结果于范围 [d_first, d_last)
-	template< class InputIt, class RandomIt >
+	template <class InputIt, class RandomIt>
 	RandomIt partial_sort_copy(InputIt first, InputIt last,
 		RandomIt d_first, RandomIt d_last) {
 		auto m = d_last - d_first;
@@ -1248,7 +1229,7 @@ namespace mystl {
 		return d_last;
 	}
 
-	template< class InputIt, class RandomIt, class Compare >
+	template <class InputIt, class RandomIt, class Compare>
 	RandomIt partial_sort_copy(InputIt first, InputIt last,
 		RandomIt d_first, RandomIt d_last, Compare comp) {
 		auto m = d_last - d_first;
@@ -1274,7 +1255,7 @@ namespace mystl {
 
 	// merge_sort
 	// 归并排序
-	template< class RandomIt, class T >
+	template <class RandomIt, class T>
 	void merge_sort(RandomIt first, RandomIt last, std::vector<T>& v) {
 		if (last - first <= 1) {
 			return;
@@ -1310,7 +1291,7 @@ namespace mystl {
 		}
 	}
 
-	template< class RandomIt, class T, class Compare >
+	template <class RandomIt, class T, class Compare>
 	void merge_sort(RandomIt first, RandomIt last, std::vector<T>& v, Compare comp) {
 		if (last - first <= 1) {
 			return;
@@ -1349,23 +1330,23 @@ namespace mystl {
 	// stable_sort
 	// 以非降序排序范围 [first, last) 中的元素
 	// 保证保持等价元素间的顺序
-	template< class RandomIt >
+	template <class RandomIt>
 	void stable_sort(RandomIt first, RandomIt last) {
-		using Ty = mystl::remove_reference_t<decltype(*first)>;
+		using Ty = std::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> v(last - first);
 		mystl::merge_sort(first, last, v);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void stable_sort(RandomIt first, RandomIt last, Compare comp) {
-		using Ty = mystl::remove_reference_t<decltype(*first)>;
+		using Ty = std::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> v(last - first);
 		mystl::merge_sort(first, last, v, comp);
 	}
 
 	// median
 	// 三数取中
-	template< class T >
+	template <class T>
 	T median(const T& left, const T& mid, const T& right) {
 		if (left < mid) {
 			if (right < left) {
@@ -1391,7 +1372,7 @@ namespace mystl {
 		}
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	T median(const T& left, const T& mid, const T& right, Compare comp) {
 		if (comp(left, mid)) {
 			if (comp(right, left)) {
@@ -1419,26 +1400,26 @@ namespace mystl {
 
 	// insertion_sort
 	// 插入排序
-	template< class RandomIt >
+	template <class RandomIt>
 	void insertion_sort(RandomIt first, RandomIt last) {
 		auto n = last - first;
 		for (auto i = first - first; i < n; ++i) {
 			auto value = *(first + i);
 			auto j = i - 1;
-			for (; j >= 0 && value < *(first + j); --j) {
+			for (; j>= 0 && value < *(first + j); --j) {
 				*(first + 1 + j) = *(first + j);
 			}
 			*(first + 1 + j) = value;
 		}
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void insertion_sort(RandomIt first, RandomIt last, Compare comp) {
 		auto n = last - first;
 		for (auto i = first - first; i < n; ++i) {
 			auto value = *(first + i);
 			auto j = i - 1;
-			for (; j >= 0 && comp(value, *(first + j)); --j) {
+			for (; j>= 0 && comp(value, *(first + j)); --j) {
 				*(first + 1 + j) = *(first + j);
 			}
 			*(first + 1 + j) = value;
@@ -1447,7 +1428,7 @@ namespace mystl {
 
 	// random_partition
 	// partition 随机迭代器版本
-	template< class RandomIt, class T >
+	template <class RandomIt, class T>
 	RandomIt random_partition(RandomIt first, RandomIt last, const T& value) {
 		auto l = first - first;
 		auto r = last - first;
@@ -1467,7 +1448,7 @@ namespace mystl {
 		}
 	}
 
-	template< class RandomIt, class T, class Compare >
+	template <class RandomIt, class T, class Compare>
 	RandomIt random_partition(RandomIt first, RandomIt last, const T& value, Compare comp) {
 		auto l = first - first;
 		auto r = last - first;
@@ -1490,7 +1471,7 @@ namespace mystl {
 	// nth_emlement
 	// nth_element 会重排 [first, last) 中的元素，使得在重排后
 	// nth 指向的元素被更改为假如 [first, last) 已排序则该位置会出现的元素
-	template< class RandomIt >
+	template <class RandomIt>
 	void nth_element(RandomIt first, RandomIt nth, RandomIt last) {
 		auto l = first - first;
 		auto r = last - first;
@@ -1506,7 +1487,7 @@ namespace mystl {
 		mystl::insertion_sort(first + l, first + r);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void nth_element(RandomIt first, RandomIt nth, RandomIt last,
 		Compare comp) {
 		auto l = first - first;
@@ -1526,7 +1507,7 @@ namespace mystl {
 
 	// quick_sort
 	// 快速排序
-	template< class RandomIt >
+	template <class RandomIt>
 	void quick_sort(RandomIt first, RandomIt last, int depth) {
 		if (last - first <= 1) {
 			return;
@@ -1550,7 +1531,7 @@ namespace mystl {
 		mystl::quick_sort(mid, first + r, depth);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void quick_sort(RandomIt first, RandomIt last, int depth, Compare comp) {
 		if (last - first <= 1) {
 			return;
@@ -1577,12 +1558,12 @@ namespace mystl {
 	// sort
 	// 以非降序排序范围 [first, last) 中的元素
 	// 不保证维持相等元素的顺序
-	template< class RandomIt >
+	template <class RandomIt>
 	void sort(RandomIt first, RandomIt last) {
 		mystl::quick_sort(first, last, 0);
 	}
 
-	template< class RandomIt, class Compare >
+	template <class RandomIt, class Compare>
 	void sort(RandomIt first, RandomIt last, Compare comp) {
 		mystl::quick_sort(first, last, 0, comp);
 	}
@@ -1591,7 +1572,7 @@ namespace mystl {
 
 	// lower_bound
 	// 在已划分的范围 [first, last) 中查找第一个不先序于 value 的元素
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	ForwardIt lower_bound(ForwardIt first, ForwardIt last,
 		const T& value) {
 		ForwardIt it;
@@ -1611,7 +1592,7 @@ namespace mystl {
 		return first;
 	}
 
-	template< class ForwardIt, class T, class Compare >
+	template <class ForwardIt, class T, class Compare>
 	ForwardIt lower_bound(ForwardIt first, ForwardIt last,
 		const T & value, Compare comp) {
 		ForwardIt it;
@@ -1632,7 +1613,7 @@ namespace mystl {
 	}
 	// upper_bound
 	// 在已划分的范围 [first, last) 中查找第一个后序于 value 的元素
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	ForwardIt upper_bound(ForwardIt first, ForwardIt last,
 		const T & value) {
 		ForwardIt it;
@@ -1652,7 +1633,7 @@ namespace mystl {
 		return first;
 	}
 
-	template< class ForwardIt, class T, class Compare >
+	template <class ForwardIt, class T, class Compare>
 	ForwardIt upper_bound(ForwardIt first, ForwardIt last,
 		const T& value, Compare comp) {
 		ForwardIt it;
@@ -1674,7 +1655,7 @@ namespace mystl {
 
 	// binary_search
 	// 检查在已划分范围 [first, last) 中是否出现与 value 等价的元素
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	bool binary_search(ForwardIt first, ForwardIt last,
 		const T& value) {
 		first = mystl::lower_bound(first, last, value);
@@ -1688,13 +1669,13 @@ namespace mystl {
 
 	// equal_range
 	// 返回范围 [first, last) 中包含所有等价于 value 的元素的范围
-	template< class ForwardIt, class T >
+	template <class ForwardIt, class T>
 	std::pair<ForwardIt, ForwardIt>
 		equal_range(ForwardIt first, ForwardIt last, const T& value) {
 		return { mystl::lower_bound(first, last, value), mystl::upper_bound(first, last, value) };
 	}
 
-	template< class ForwardIt, class T, class Compare >
+	template <class ForwardIt, class T, class Compare>
 	std::pair<ForwardIt, ForwardIt>
 		equal_range(ForwardIt first, ForwardIt last,
 			const T& value, Compare comp) {
@@ -1704,7 +1685,7 @@ namespace mystl {
 
 	// 其他有序范围上的操作
 	// 将两个有序范围 [first1, last1) 和 [first2, last2) 合并到始于 d_first 的一个有序范围中
-	template< class InputIt1, class InputIt2, class OutputIt >
+	template <class InputIt1, class InputIt2, class OutputIt>
 	OutputIt merge(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first) {
@@ -1724,8 +1705,8 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2,
-		class OutputIt, class Compare >
+	template <class InputIt1, class InputIt2,
+		class OutputIt, class Compare>
 	OutputIt merge(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first, Compare comp) {
@@ -1748,9 +1729,9 @@ namespace mystl {
 
 	// inplace_merge
 	// 将两个相继的有序范围 [first, middle) 和 [middle, last) 归并为一个有序范围 [first, last)
-	template< class BidirIt >
+	template <class BidirIt>
 	void inplace_merge(BidirIt first, BidirIt middle, BidirIt last) {
-		using Ty = mystl::remove_reference_t<decltype(*first)>;
+		using Ty = std::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> tmp(std::distance(first, last));
 		auto it_1 = first;
 		auto it_2 = middle;
@@ -1774,9 +1755,9 @@ namespace mystl {
 		}
 	}
 
-	template< class BidirIt, class Compare >
+	template <class BidirIt, class Compare>
 	void inplace_merge(BidirIt first, BidirIt middle, BidirIt last, Compare comp) {
-		using Ty = mystl::remove_reference_t<decltype(*first)>;
+		using Ty = std::remove_reference_t<decltype(*first)>;
 		std::vector<Ty> tmp(std::distance(first, last));
 		auto it_1 = first;
 		auto it_2 = middle;
@@ -1805,7 +1786,7 @@ namespace mystl {
 	
 	// includes
 	// 在有序范围 [first2, last2) 是有序范围 [first1, last1) 的子序列的情况下返回 true（不必是连续的子序列）
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	bool includes(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2) {
 		for (; first2 != last2; ++first1) {
@@ -1819,7 +1800,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class InputIt1, class InputIt2, class Compare >
+	template <class InputIt1, class InputIt2, class Compare>
 	bool includes(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2, Compare comp) {
 		for (; first2 != last2; ++first1) {
@@ -1836,7 +1817,7 @@ namespace mystl {
 	// set_difference
 	// 复制来自有序范围 [first1, last1) 并且在有序范围 [first2, last2) 中未能找到的元素到始于 d_first 的范围
 	// 输出范围也保持有序
-	template< class InputIt1, class InputIt2, class OutputIt >
+	template <class InputIt1, class InputIt2, class OutputIt>
 	OutputIt set_difference(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first) {
@@ -1856,8 +1837,8 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2,
-		class OutputIt, class Compare >
+	template <class InputIt1, class InputIt2,
+		class OutputIt, class Compare>
 	OutputIt set_difference(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first, Compare comp) {
@@ -1879,7 +1860,7 @@ namespace mystl {
 
 	// set_intersection
 	// 构造始于 d_first，由在两个有序范围[first1, last1) 与[first2, last2) 中都找到的元素构成的有序范围
-	template< class InputIt1, class InputIt2, class OutputIt >
+	template <class InputIt1, class InputIt2, class OutputIt>
 	OutputIt set_intersection(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first) {
@@ -1899,7 +1880,7 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2, class OutputIt, class Compare >
+	template <class InputIt1, class InputIt2, class OutputIt, class Compare>
 	OutputIt set_intersection(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first, Compare comp) {
@@ -1924,7 +1905,7 @@ namespace mystl {
 	// set_symmetric_difference
 	// 计算两个有序范围的对称差：将处于任一范围中，但未在两个范围中均被找到的元素，复制到始于 d_first 的范围
 	// 输出范围也保持有序
-	template< class InputIt1, class InputIt2, class OutputIt >
+	template <class InputIt1, class InputIt2, class OutputIt>
 	OutputIt set_symmetric_difference
 	(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
@@ -1950,8 +1931,8 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2,
-		class OutputIt, class Compare >
+	template <class InputIt1, class InputIt2,
+		class OutputIt, class Compare>
 	OutputIt set_symmetric_difference
 	(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
@@ -1981,7 +1962,7 @@ namespace mystl {
 
 	// set_union
 	// 构造从 d_first 开始的有序并集，由存在于有序范围 [first1, last1) 和 [first2, last2) 之一或二者中的所有元素构成
-	template< class InputIt1, class InputIt2, class OutputIt >
+	template <class InputIt1, class InputIt2, class OutputIt>
 	OutputIt set_union(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first) {
@@ -2007,8 +1988,8 @@ namespace mystl {
 		return d_first;
 	}
 
-	template< class InputIt1, class InputIt2,
-		class OutputIt, class Compare >
+	template <class InputIt1, class InputIt2,
+		class OutputIt, class Compare>
 	OutputIt set_union(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		OutputIt d_first, Compare comp) {
@@ -2048,17 +2029,17 @@ namespace mystl {
 
 	// max
 	// 返回给定值中的较大者
-	template< class T >
+	template <class T>
 	constexpr const T& max(const T& a, const T& b) {
 		return b < a ? a : b;
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr const T& max(const T& a, const T& b, Compare comp) {
 		return comp(b, a) ? a : b;
 	}
 
-	template< class T >
+	template <class T>
 	constexpr T max(std::initializer_list<T> ilist) {
 		T maximum = *ilist.begin();
 		for (auto& n : ilist) {
@@ -2067,7 +2048,7 @@ namespace mystl {
 		return maximum;
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr T max(std::initializer_list<T> ilist, Compare comp) {
 		T maximum = *ilist.begin();
 		for (auto& n : ilist) {
@@ -2077,7 +2058,7 @@ namespace mystl {
 
 	// max_element
 	// 寻找范围 [first, last) 中的最大元素
-	template< class ForwardIt >
+	template <class ForwardIt>
 	constexpr ForwardIt max_element(ForwardIt first, ForwardIt last) {
 		auto maximum = first;
 		while (++first != last) {
@@ -2086,7 +2067,7 @@ namespace mystl {
 		return maximum;
 	}
 
-	template< class ForwardIt, class Compare >
+	template <class ForwardIt, class Compare>
 	constexpr ForwardIt max_element(ForwardIt first, ForwardIt last,
 		Compare comp) {
 		auto maximum = first;
@@ -2098,17 +2079,17 @@ namespace mystl {
 
 	// min
 	// 返回给定值中的较小者
-	template< class T >
+	template <class T>
 	constexpr const T& min(const T& a, const T& b) {
 		return a < b ? a : b;
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr const T& min(const T& a, const T& b, Compare comp) {
 		return comp(a, b) ? a : b;
 	}
 
-	template< class T >
+	template <class T>
 	constexpr T min(std::initializer_list<T> ilist) {
 		T minimum = *ilist.begin();
 		for (auto& n : ilist) {
@@ -2117,7 +2098,7 @@ namespace mystl {
 		return minimum;
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr T min(std::initializer_list<T> ilist, Compare comp) {
 		T minimum = *ilist.begin();
 		for (auto& n : ilist) {
@@ -2128,7 +2109,7 @@ namespace mystl {
 
 	// min_element
 	// 寻找范围 [first, last) 中的最小元素
-	template< class ForwardIt >
+	template <class ForwardIt>
 	constexpr ForwardIt min_element(ForwardIt first, ForwardIt last) {
 		auto minimum = first;
 		while (++first != last) {
@@ -2137,7 +2118,7 @@ namespace mystl {
 		return minimum;
 	}
 
-	template< class ForwardIt, class Compare >
+	template <class ForwardIt, class Compare>
 	constexpr ForwardIt min_element(ForwardIt first, ForwardIt last,
 		Compare comp) {
 		auto minimum = first;
@@ -2149,7 +2130,7 @@ namespace mystl {
 
 	// minmax
 	// 返回给定值的最小和最大者
-	template< class T >
+	template <class T>
 	constexpr std::pair<const T&, const T&> minmax(const T& a, const T& b) {
 		if (a < b) {
 			return { a, b };
@@ -2157,7 +2138,7 @@ namespace mystl {
 		return { b, a };
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr std::pair<const T&, const T&> minmax(const T& a, const T& b,
 		Compare comp) {
 		if (comp(a, b)) {
@@ -2166,7 +2147,7 @@ namespace mystl {
 		return { b, a };
 	}
 
-	template< class T >
+	template <class T>
 	constexpr std::pair<T, T> minmax(std::initializer_list<T> ilist) {
 		T maximum = *ilist.begin();
 		T minimum = *ilist.begin();
@@ -2177,7 +2158,7 @@ namespace mystl {
 		return { minimum, maximum };
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr std::pair<T, T> minmax(std::initializer_list<T> ilist, Compare comp) {
 		T maximum = *ilist.begin();
 		T minimum = *ilist.begin();
@@ -2190,7 +2171,7 @@ namespace mystl {
 
 	// minmax_element
 	// 寻找范围 [first, last) 中最小和最大的元素
-	template< class ForwardIt >
+	template <class ForwardIt>
 	constexpr std::pair<ForwardIt, ForwardIt>
 		minmax_element(ForwardIt first, ForwardIt last) {
 		auto maximum = first;
@@ -2202,7 +2183,7 @@ namespace mystl {
 		return { minimum, maximum };
 	}
 
-	template< class ForwardIt, class Compare >
+	template <class ForwardIt, class Compare>
 	constexpr std::pair<ForwardIt, ForwardIt>
 		minmax_element(ForwardIt first, ForwardIt last, Compare comp) {
 		auto maximum = first;
@@ -2217,7 +2198,7 @@ namespace mystl {
 	// clamp
 	// 如果 v 属于 [lo, hi]，则返回 v
 	// 否则返回最临近的边界
-	template< class T >
+	template <class T>
 	constexpr const T& clamp(const T& v, const T& lo, const T& hi) {
 		if (!(v < lo)) {
 			if (!(hi < v)) {
@@ -2230,7 +2211,7 @@ namespace mystl {
 		}
 	}
 
-	template< class T, class Compare >
+	template <class T, class Compare>
 	constexpr const T& clamp(const T& v, const T& lo, const T& hi,
 		Compare comp) {
 		if (!comp(v, lo)) {
@@ -2248,7 +2229,7 @@ namespace mystl {
 
 	// equal
 	// 检查 [first1, last1) 与从 first2 开始的另一个范围是否相等
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	bool equal(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2) {
 		while (first1++ != last1) {
@@ -2259,7 +2240,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class InputIt1, class InputIt2, class BinaryPred >
+	template <class InputIt1, class InputIt2, class BinaryPred>
 	bool equal(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, BinaryPred p) {
 		while (first1++ != last1) {
@@ -2270,7 +2251,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	bool equal(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2) {
 		if (std::distance(first1, last1) != std::distance(first2, last2)) {
@@ -2284,7 +2265,7 @@ namespace mystl {
 		return true;
 	}
 
-	template< class InputIt1, class InputIt2, class BinaryPred >
+	template <class InputIt1, class InputIt2, class BinaryPred>
 	bool equal(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2, BinaryPred p) {
 		if (std::distance(first1, last1) != std::distance(first2, last2)) {
@@ -2300,7 +2281,7 @@ namespace mystl {
 
 	// lexicographical_compare
 	// 检查第一个范围 [first1, last1) 是否按字典序小于 ﻿第二个范围 [first2, last2)
-	template< class InputIt1, class InputIt2 >
+	template <class InputIt1, class InputIt2>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2) {
 		while (first1 != last1 && first2 != last2) {
@@ -2322,7 +2303,7 @@ namespace mystl {
 		return false;
 	}
 
-	template< class InputIt1, class InputIt2, class Compare >
+	template <class InputIt1, class InputIt2, class Compare>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
 		InputIt2 first2, InputIt2 last2,
 		Compare comp) {
